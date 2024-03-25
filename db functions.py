@@ -241,8 +241,8 @@ userinput = input('>> ').lower()
 if userinput == '1':
     fetch_all_books()
     print("""
-    Enter Book ID to view details (e.g. for The Great Gatsby input '50')
-    """)
+Enter Book ID to view details (e.g. for The Great Gatsby input '50')
+""")
     book = input(">> ")
     fetch_specific_book(book)
     print("""
