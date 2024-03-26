@@ -1,6 +1,6 @@
 import sqlite3
 
-# functions hi
+# functions
 
 
 def fetch_author_id():
@@ -66,7 +66,7 @@ def fetch_all_books():
     LEFT JOIN Series ON Books.series = series.id;"""
     cursor.execute(sql)
     results = cursor.fetchall()
-    print(f"Book ID | Title {tsp}| Author {asp}| Series {ssp}| Avaiability")
+    print(f"\nBook ID | Title {tsp}| Author {asp}| Series {ssp}| Avaiability")
     for i in results:
         print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
     db.close()
@@ -382,48 +382,30 @@ WHERE author = {authorid};"""
     db.close()
 
 
-
 # main code
-print("""
-Welcome to Libaray Database
+print("\nWelcome to Libaray Database\n\nEnter 1 to view data\nEnter 2 to edit data")
+userinput = input('>> ')
+if userinput == '1':
+    print("\nEnter 'a' to view book data\nEnter 'b' to view member data")
+    userinput1 = input('>> ').lower()
 
-Enter 1 to view a list of all books
-Enter 2 to search by Author
-Enter 3 to search by Series
-Enter ... [Add and remove data, Edit/change data, Delete items,
-Renew book, mark a book overdue (can i make this automatic?)]
-""")
-userinput1 = input('>> ').lower()
-if userinput1 == '1':
-    fetch_all_books()
-    print("""
-Enter 'a' to view details on specific book
-Enter 'b' to view all available books
-Enter 'c' to view all stand alone books
-Enter 'd' to view... (genre, publishing year, rating)
-    """)
-    userinput2 = input('>> ').lower()
-    if userinput2 == 'a':
-        print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')\n")
-        book = input(">> ")
-        fetch_specific_book(book)
-        print("""
-Enter 'a' to view avaiability details
-Enter 'b' to view more books by this author
-Enter 'c' to view books in this series
-""")
-        userinput3 = input('>> ').lower()
-        if userinput3 == 'a':
-            fetch_specfic_borrowing_table(book)
-        if userinput3 == 'b':
-            fetch_books_by_specific_author(book)
-        if userinput3 == 'c':
-            print("[Table of books in this series]")
-
-#    if userinput2 == 'b':
-#        fetch_all_avaliable_books()
-
-#    if userinput2 == 'c':
-#        fetch_all_stand_alone_books()
-            
-# hello
+    if userinput1 == 'a':
+        fetch_all_books()
+        print("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book")
+        userinput2 = input('>> ').lower()
+#        if userinput2 == 'a':
+#        if userinput2 == 'b':
+        if userinput2 == 'c':
+            print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')")
+            book = input("Book ID: ")
+            fetch_specific_book(book)
+#            print("\nEnter 'a' to view avaiability details\nEnter 'b' to view more books by this author\nEnter 'c' to view books in this series\n")
+#            userinput3 = input('>> ').lower()
+#            if userinput3 == 'a':
+#                fetch_specfic_borrowing_table(book)
+#            if userinput3 == 'b':
+#                fetch_books_by_specific_author(book)
+#            if userinput3 == 'c':
+#                print("[Table of bo`oks in this series]")
+    if userinput1 == 'b':
+        fetch_all_members()
