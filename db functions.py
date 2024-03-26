@@ -203,11 +203,6 @@ def fetch_books_by_author_id(author_id):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
 
-    sql1 = f"SELECT * FROM Books WHERE Author == {author_id};"
-    cursor.execute(sql1)
-    results = cursor.fetchall()
-    for i in results:
-
     # title column format
     sql2 = f"SELECT Title FROM Books WHERE Author == {author_id} ORDER BY Length(title) desc LIMIT 1;"
     cursor.execute(sql2)
@@ -227,6 +222,17 @@ def fetch_books_by_author_id(author_id):
         asp = (alg-6) * " "
     
     # series column format
+    sql4 = f"""SELECT Series.series_title
+FROM Books
+LEFT JOIN Series on Books.series = series.id
+WHERE author = {author_id}
+ORDER BY Length(series_title) desc LIMIT 1;"""
+    cursor.execute(sql4)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        slg = len(x)
+        ssp = (slg-6) * " "
 
     # print table
     sql = f"""SELECT Books.book_id, Books.Title,
@@ -235,7 +241,12 @@ def fetch_books_by_author_id(author_id):
     LEFT JOIN Author ON Books.Author = Author.id
     LEFT JOIN Series ON Books.series = series.id
     WHERE author = {author_id};"""
-
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(f"Book ID | Title {tsp}| Author {asp}| Series {ssp}| Avaiability")
+    for i in results:
+        print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
+    db.close()
 
 def fetch_specific_book(book_id):
     db = sqlite3.connect('PraticeHome.db')
