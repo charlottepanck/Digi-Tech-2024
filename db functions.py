@@ -199,6 +199,44 @@ def fetch_all_members():
     db.close()
 
 
+def fetch_books_by_author_id(author_id):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    sql1 = f"SELECT * FROM Books WHERE Author == {author_id};"
+    cursor.execute(sql1)
+    results = cursor.fetchall()
+    for i in results:
+
+    # title column format
+    sql2 = f"SELECT Title FROM Books WHERE Author == {author_id} ORDER BY Length(title) desc LIMIT 1;"
+    cursor.execute(sql2)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        tlg = len(x)
+        tsp = (tlg-5) * " "
+
+    # author column format
+    sql3 = f"SELECT name FROM author WHERE id == {author_id} ORDER BY Length(name) desc LIMIT 1;"
+    cursor.execute(sql3)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        alg = len(x)
+        asp = (alg-6) * " "
+    
+    # series column format
+
+    # print table
+    sql = f"""SELECT Books.book_id, Books.Title,
+    Author.name, Series.series_title, Books.availability
+    FROM Books
+    LEFT JOIN Author ON Books.Author = Author.id
+    LEFT JOIN Series ON Books.series = series.id
+    WHERE author = {author_id};"""
+
+
 def fetch_specific_book(book_id):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
@@ -233,10 +271,10 @@ def fetch_specific_book(book_id):
 
     # print table
     sql = f"""SELECT Books.book_id, Books.Title,
-    Author.name, Series.series_title, Books.availability
-    FROM Books
-    LEFT JOIN Author ON Books.Author = Author.id
-    LEFT JOIN Series ON Books.series = series.id
+Author.name, Series.series_title, Books.availability
+FROM Books
+LEFT JOIN Author ON Books.Author = Author.id
+LEFT JOIN Series ON Books.series = series.id
     WHERE book_id = {book_id};"""
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -393,12 +431,24 @@ if userinput == '1':
         fetch_all_books()
         print("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book")
         userinput2 = input('>> ').lower()
-#        if userinput2 == 'a':
+        if userinput2 == 'a':
+            fetch_author_id()
+            print("\nEnter Author ID to books by author (e.g. for J.K. Rowling input '27')")
+            author = input("Author ID: ")
+            fetch_books_by_author_id(author)
+            
+
+
 #        if userinput2 == 'b':
         if userinput2 == 'c':
             print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')")
             book = input("Book ID: ")
             fetch_specific_book(book)
+
+
+
+
+
 #            print("\nEnter 'a' to view avaiability details\nEnter 'b' to view more books by this author\nEnter 'c' to view books in this series\n")
 #            userinput3 = input('>> ').lower()
 #            if userinput3 == 'a':
