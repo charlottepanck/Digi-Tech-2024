@@ -453,25 +453,4 @@ WHERE author = {authorid};"""
     #    print(f"{i[0]:{alg}} | {i[1]:{tlg}}")
     db.close()
 
-
-# main code
-print("\nWelcome to Libaray Database\n\nEnter 1 to view data\nEnter 2 to edit data")
-userinput = input('>> ')
-if userinput == '1':
-    print("\nEnter 'a' to view book data\nEnter 'b' to view member data")
-    userinput1 = input('>> ').lower()
-
-    if userinput1 == 'a':
-        fetch_all_books()
-        print("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book")
-        userinput2 = input('>> ').lower()
-        if userinput2 == 'a':
-            fetch_author_id()
-            print("\nEnter Author ID to books by author (e.g. for J.K. Rowling input '27')")
-            author = input("Author ID: ")
-            fetch_books_by_author_id(author)
-#        if userinput2 == 'b':
-        if userinput2 == 'c':
-            print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')")
-            book = input("Book ID: ")
-            fetch_specific_book(book)
+fetch_all_stand_alone_books()
