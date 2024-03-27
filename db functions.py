@@ -536,8 +536,12 @@ if userinput == '1':
             print("\nEnter Series ID to books in series (e.g. for Harry Potter input '9')")
             series = input("Series ID: ")
             fetch_specific_series(series)
-
         if userinput2 == 'c':
             print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')")
             book = input("Book ID: ")
             fetch_specific_book(book)
+        if userinput2 == 'd':
+            print("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books")
+            userinput3 = input(">> ")
+            if userinput3 == 'a':
+                fetch_all_avaliable_books()
