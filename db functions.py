@@ -230,7 +230,7 @@ ORDER BY Length(name) desc LIMIT 1;"""
         x = (f"{i}")
         alg = len(x)
         asp = (alg-6) * " "
-    
+
     # series column format
     sql4 = f"""SELECT Series.series_title
 FROM Books
@@ -443,15 +443,76 @@ WHERE author = {authorid};"""
     print(f"Title {tsp}| Author {asp}| Series {ssp}| Availability")
     for i in results:
         print(f"{i[0]:{tlg}} | {i[1]:{alg}} | {i[2]:{slg}} | {i[3]}")
-    
+
     # print table
-    #sql = f"""SELECT Author.name, Books.title FROM Books LEFT JOIN Author ON Books.author = Author.id WHERE Books.book_id = {book_id};"""
-    #cursor.execute(sql)
-    #results = cursor.fetchall()
-    #print(f"Author {asp}| Book Title {tsp}")
-    #for i in results:
-    #    print(f"{i[0]:{alg}} | {i[1]:{tlg}}")
+    # sql = f"""SELECT Author.name, Books.title FROM Books LEFT JOIN Author ON Books.author = Author.id WHERE Books.book_id = {book_id};"""
+    # cursor.execute(sql)
+    # results = cursor.fetchall()
+    # print(f"Author {asp}| Book Title {tsp}")
+    # for i in results:
+    #     print(f"{i[0]:{alg}} | {i[1]:{tlg}}")
     db.close()
+
+
+def fetch_specific_series(id):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    # author id
+    sqlb = f"""SELECT author FROM Books 
+WHERE series = {id};"""
+    cursor.execute(sqlb)
+    results = cursor.fetchone()
+    for i in results:
+        authorid = i 
+
+    # series id
+    sqla = f"""SELECT series FROM Books 
+WHERE series = {id};"""
+    cursor.execute(sqla)
+    results = cursor.fetchone()
+    for i in results:
+        seriesid = i    
+
+    # title column format
+    sql1 = f"""SELECT title FROM books
+WHERE series == {id} 
+ORDER BY Length(title) desc LIMIT 1;"""
+    cursor.execute(sql1)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        tlg = len(x)
+        tsp = (tlg-5) * " "
+    
+    # author column format
+    sql2 = f"SELECT name FROM author WHERE id == {authorid} ORDER BY Length(name) desc LIMIT 1;"
+    cursor.execute(sql2)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        alg = len(x)
+        asp = (alg-6) * " "
+
+    # series column format
+    sql3 = f"SELECT series_title FROM series WHERE id == {seriesid} ORDER BY Length(series_title) desc LIMIT 1;"
+    cursor.execute(sql3)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        slg = len(x)
+        ssp = (slg-6) * " "
+
+    sql = f"""SELECT Books.title, Author.name, series.series_title, books.availability 
+FROM Books
+LEFT JOIN Author ON Books.author = Author.id
+LEFT JOIN Series ON Books.series = Series.id
+WHERE series = {id};"""
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(f"Title {tsp}| Author {asp}| Series {ssp}| Availability")
+    for i in results:
+        print(f"{i[0]:{tlg}} | {i[1]:{alg}} | {i[2]:{slg}} | {i[3]}")
 
 
 # main code
@@ -463,14 +524,19 @@ if userinput == '1':
 
     if userinput1 == 'a':
         fetch_all_books()
-        print("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book")
+        print("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book\nEnter 'd' to filter results by avaliability")
         userinput2 = input('>> ').lower()
         if userinput2 == 'a':
             fetch_author_id()
             print("\nEnter Author ID to books by author (e.g. for J.K. Rowling input '27')")
             author = input("Author ID: ")
             fetch_books_by_author_id(author)
-#        if userinput2 == 'b':
+        if userinput2 == 'b':
+            fetch_all_series()
+            print("\nEnter Series ID to books in series (e.g. for Harry Potter input '9')")
+            series = input("Series ID: ")
+            fetch_specific_series(series)
+
         if userinput2 == 'c':
             print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')")
             book = input("Book ID: ")
