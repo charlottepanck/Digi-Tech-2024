@@ -124,6 +124,52 @@ WHERE Series = 7;"""
         print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
     db.close()
 
+def fetch_all_unavaliable_books():
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    # title column format
+    sql1 = "SELECT Title FROM Books WHERE availability = 'Unavaliable' ORDER BY Length(title) desc LIMIT 1;"
+    cursor.execute(sql1)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        tlg = len(x)
+        tsp = (tlg-5) * " "
+
+    # author column format
+    sql2 = "SELECT name FROM author ORDER BY Length(name) desc LIMIT 1;"
+    cursor.execute(sql2)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        alg = len(x)
+        asp = (alg-6) * " "
+
+    # series column format
+    sql3 = """SELECT series_title FROM series
+    ORDER BY Length(series_title) desc LIMIT 1;"""
+    cursor.execute(sql3)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        slg = len(x)
+        ssp = (slg-6) * " "
+
+    # print table
+    sql = """SELECT Books.book_id, Books.Title,
+    Author.name, Series.series_title, Books.availability
+    FROM Books
+    LEFT JOIN Author ON Books.Author = Author.id
+    LEFT JOIN Series ON Books.series = series.id
+    WHERE availability = 'Unavaliable';"""
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(f"Book ID | Title {tsp}| Author {asp}| Series {ssp}| Avaiability")
+    for i in results:
+        print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
+    db.close()
+
 
 def fetch_all_avaliable_books():
     db = sqlite3.connect('PraticeHome.db')
@@ -458,21 +504,13 @@ def fetch_specific_series(id):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
 
-    # author id
-    sqlb = f"""SELECT author FROM Books 
-WHERE series = {id};"""
-    cursor.execute(sqlb)
-    results = cursor.fetchone()
-    for i in results:
-        authorid = i 
-
     # series id
     sqla = f"""SELECT series FROM Books 
 WHERE series = {id};"""
     cursor.execute(sqla)
     results = cursor.fetchone()
     for i in results:
-        seriesid = i    
+        seriesid = i   
 
     # title column format
     sql1 = f"""SELECT title FROM books
@@ -486,7 +524,10 @@ ORDER BY Length(title) desc LIMIT 1;"""
         tsp = (tlg-5) * " "
     
     # author column format
-    sql2 = f"SELECT name FROM author WHERE id == {authorid} ORDER BY Length(name) desc LIMIT 1;"
+    sql2 = f"""SELECT author.name
+FROM books
+LEFT JOIN author on author.id = books.author
+WHERE series == {id} ORDER BY Length(name) desc LIMIT 1;"""
     cursor.execute(sql2)
     results = cursor.fetchone()
     for i in results:
@@ -513,35 +554,42 @@ WHERE series = {id};"""
     print(f"Title {tsp}| Author {asp}| Series {ssp}| Availability")
     for i in results:
         print(f"{i[0]:{tlg}} | {i[1]:{alg}} | {i[2]:{slg}} | {i[3]}")
-
+    db.close
 
 # main code
-print("\nWelcome to Libaray Database\n\nEnter 1 to view data\nEnter 2 to edit data")
-userinput = input('>> ')
-if userinput == '1':
-    print("\nEnter 'a' to view book data\nEnter 'b' to view member data")
-    userinput1 = input('>> ').lower()
+print("\nWelcome to Libaray Database\n")
+while True:
+    userinput = input("\nEnter 1 to view data\nEnter 2 to edit data\n>> ")
+    if userinput == '1':
+        userinput1 = input("\nEnter 'a' to view book data\nEnter 'b' to view member data\n>> ").lower()
 
-    if userinput1 == 'a':
-        fetch_all_books()
-        print("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book\nEnter 'd' to filter results by avaliability")
-        userinput2 = input('>> ').lower()
-        if userinput2 == 'a':
-            fetch_author_id()
-            print("\nEnter Author ID to books by author (e.g. for J.K. Rowling input '27')")
-            author = input("Author ID: ")
-            fetch_books_by_author_id(author)
-        if userinput2 == 'b':
-            fetch_all_series()
-            print("\nEnter Series ID to books in series (e.g. for Harry Potter input '9')")
-            series = input("Series ID: ")
-            fetch_specific_series(series)
-        if userinput2 == 'c':
-            print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')")
-            book = input("Book ID: ")
-            fetch_specific_book(book)
-        if userinput2 == 'd':
-            print("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books")
-            userinput3 = input(">> ")
-            if userinput3 == 'a':
-                fetch_all_avaliable_books()
+        if userinput1 == 'a':
+            fetch_all_books()
+            userinput2 = input("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book\nEnter 'd' to filter results by avaliability\n>> ").lower()
+            if userinput2 == 'a':
+                fetch_author_id()
+                print("\nEnter Author ID to books by author (e.g. for J.K. Rowling input '27')")
+                author = input("Author ID: ")
+                fetch_books_by_author_id(author)
+            if userinput2 == 'b':
+                fetch_all_series()
+                print("\nEnter Series ID to books in series (e.g. for Harry Potter input '9')")
+                series = input("Series ID: ")
+                fetch_specific_series(series)
+            if userinput2 == 'c':
+                print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')")
+                book = input("Book ID: ")
+                fetch_specific_book(book)
+            if userinput2 == 'd':
+                userinput3 = input("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books\n>> ")
+                if userinput3 == 'a':
+                    fetch_all_avaliable_books()
+                if userinput3 == 'b':
+                    fetch_all_unavaliable_books()
+        if userinput1 == 'b':
+            fetch_all_members()
+            userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to filter data by \nEnter 'c' to filter data by\n>> ")
+            if userinput4 == 'a':
+                fetch_borrowing_table()
+    if userinput == '2':
+        userinput5 = input("\nEnter 'a' to \nEnter 'b' to \nEnter 'c' to \n>> ")
