@@ -357,6 +357,93 @@ ORDER BY Length(title) desc LIMIT 1;"""
         print(f"{i[0]:{fnlg}} | {i[1]:{tlg}} | {i[2]} | {i[3]}")
     db.close()
 
+def fetch_young_adults():
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
+    cursor.execute(sql1)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        forenamelength = len(x)
+        forenamespaces = (forenamelength-4) * " "
+
+    sql3 = "SELECT email FROM Members ORDER BY Length(email) desc LIMIT 1;"
+    cursor.execute(sql3)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        emaillength = len(x)
+        emailspaces = (emaillength-5) * " "
+
+    sql = "SELECT * FROM Members WHERE Age > 13 and Age < 18;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(f"Member ID | Name {forenamespaces}| Email {emailspaces}| Age")
+    for i in results:
+        print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
+    db.close()    
+
+def fetch_all_minors():
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
+    cursor.execute(sql1)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        forenamelength = len(x)
+        forenamespaces = (forenamelength-4) * " "
+
+    sql3 = "SELECT email FROM Members ORDER BY Length(email) desc LIMIT 1;"
+    cursor.execute(sql3)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        emaillength = len(x)
+        emailspaces = (emaillength-5) * " "
+
+    sql = "SELECT * FROM Members WHERE Age < 12;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(f"Member ID | Name {forenamespaces}| Email {emailspaces}| Age")
+    for i in results:
+        print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
+    db.close()
+
+
+def fetch_all_adults():
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
+    cursor.execute(sql1)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        forenamelength = len(x)
+        forenamespaces = (forenamelength-4) * " "
+
+
+    sql3 = "SELECT email FROM Members ORDER BY Length(email) desc LIMIT 1;"
+    cursor.execute(sql3)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        emaillength = len(x)
+        emailspaces = (emaillength-5) * " "
+
+    sql = "SELECT * FROM Members WHERE Age > 17;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(f"Member ID | Name {forenamespaces}| Email {emailspaces}| Age")
+    for i in results:
+        print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
+    db.close()
+
+
 
 def fetch_specific_series(id):
     db = sqlite3.connect('PraticeHome.db')
@@ -486,7 +573,14 @@ while True:
                 print("\nEnter member id to view details (e.g. for Belle Rungrojthanacorn input '9')")
                 member = input("Member ID: ")
                 fetch_specific_member(member)
-
+            if userinput4 == 'c':
+                userinput7 = input("\nEnter 'a' to filter by children (under 12)\nEnter 'b' to filter by young adults (ages 12 to 17)\nEnter 'c' to filter by Adults (18+)\n>> ")
+                if userinput7 == 'a':
+                    fetch_all_minors()
+                if userinput7 == 'b':
+                    fetch_young_adults()
+                if userinput7 == 'c':
+                    fetch_all_adults()
 
 
 
