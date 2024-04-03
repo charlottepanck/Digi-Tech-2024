@@ -84,7 +84,11 @@ def fetch_all_unavaliable_books():
         tsp = (tlg-5) * " "
 
     # author column format
-    sql2 = "SELECT name FROM author ORDER BY Length(name) desc LIMIT 1;"
+    sql2 = """SELECT author.name
+FROM books 
+LEFT JOIN author ON books.author = author.id
+WHERE availability = 'Unavaliable'
+ORDER BY Length(name) desc LIMIT 1;"""
     cursor.execute(sql2)
     results = cursor.fetchone()
     for i in results:
@@ -93,8 +97,11 @@ def fetch_all_unavaliable_books():
         asp = (alg-6) * " "
 
     # series column format
-    sql3 = """SELECT series_title FROM series
-    ORDER BY Length(series_title) desc LIMIT 1;"""
+    sql3 = """SELECT series.series_title
+FROM books 
+LEFT JOIN series ON books.series = series.id
+WHERE availability = 'Unavaliable'
+ORDER BY Length(series_title) desc LIMIT 1;"""
     cursor.execute(sql3)
     results = cursor.fetchone()
     for i in results:
@@ -131,7 +138,11 @@ def fetch_all_avaliable_books():
         tsp = (tlg-5) * " "
 
     # author column format
-    sql2 = "SELECT name FROM author ORDER BY Length(name) desc LIMIT 1;"
+    sql2 = """SELECT author.name
+FROM books 
+LEFT JOIN author ON books.author = author.id
+WHERE availability = 'Avaliable'
+ORDER BY Length(name) desc LIMIT 1;"""
     cursor.execute(sql2)
     results = cursor.fetchone()
     for i in results:
@@ -140,8 +151,11 @@ def fetch_all_avaliable_books():
         asp = (alg-6) * " "
 
     # series column format
-    sql3 = """SELECT series_title FROM series
-    ORDER BY Length(series_title) desc LIMIT 1;"""
+    sql3 = """SELECT series.series_title
+FROM books 
+LEFT JOIN series ON books.series = series.id
+WHERE availability = 'Avaliable'
+ORDER BY Length(series_title) desc LIMIT 1;"""
     cursor.execute(sql3)
     results = cursor.fetchone()
     for i in results:
@@ -401,6 +415,38 @@ WHERE series = {id};"""
     db.close
 
 
+def fetch_specific_member(member_id):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    # forename column format
+    sql1 = f"""SELECT Forename
+    FROM Members WHERE member_id = {member_id} ORDER BY Length(forename) desc LIMIT 1;"""
+    cursor.execute(sql1)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        fnlg = len(x)
+        fnsp = (fnlg-4) * " "
+
+    # email column format
+    sql3 = f"SELECT email FROM Members WHERE member_id = {member_id} ORDER BY Length(email) desc LIMIT 1;"
+    cursor.execute(sql3)
+    results = cursor.fetchone()
+    for i in results:
+        x = (f"{i}")
+        elg = len(x)
+        esp = (elg-5) * " "
+
+    # print table
+    sql = f"SELECT * FROM Members WHERE member_id = {member_id};"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(f"Member ID | Name {fnsp}| Email {esp}| Age")
+    for i in results:
+        print(f"{i[0]:>9} | {i[1]:<{fnlg}} | {i[2]:{elg}} | {i[3]}")
+    db.close()
+
 # main code
 print("\nWelcome to Libaray Database\n")
 while True:
@@ -413,7 +459,7 @@ while True:
             userinput2 = input("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book\nEnter 'd' to filter results by avaliability\n>> ").lower()
             if userinput2 == 'a':
                 fetch_author_id()
-                print("\nEnter Author ID to books by author (e.g. for J.K. Rowling input '27')")
+                print("\nEnter Author ID to view books by author (e.g. for J.K. Rowling input '27')")
                 author = input("Author ID: ")
                 fetch_books_by_author_id(author)
             if userinput2 == 'b':
@@ -422,7 +468,7 @@ while True:
                 series = input("Series ID: ")
                 fetch_specific_series(series)
             if userinput2 == 'c':
-                print("\nEnter Book ID to view details (e.g. for The Great Gatsby input '50')")
+                print("\nEnter Book ID to view details (e.g. for Harry Potter and the Sorcerer's Stone input '56')")
                 book = input("Book ID: ")
                 fetch_specific_book(book)
             if userinput2 == 'd':
@@ -433,8 +479,20 @@ while True:
                     fetch_all_unavaliable_books()
         if userinput1 == 'b':
             fetch_all_members()
-            userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to filter data by \nEnter 'c' to filter data by\n>> ")
+            userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to view details of specific member \nEnter 'c' to filter data by age\n>> ")
             if userinput4 == 'a':
                 fetch_borrowing_table()
+            if userinput4 == 'b':
+                print("\nEnter member id to view details (e.g. for Belle Rungrojthanacorn input '9')")
+                member = input("Member ID: ")
+                fetch_specific_member(member)
+
+
+
+
     if userinput == '2':
-        userinput5 = input("\nEnter 'a' to \nEnter 'b' to \nEnter 'c' to \n>> ")
+        userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'c' to edit data\n>> ")
+        if userinput5 == 'a':
+            userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add a member")
+            if userinput6 == 'a':
+                print('a')
