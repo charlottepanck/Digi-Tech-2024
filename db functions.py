@@ -539,16 +539,21 @@ def add_book(title, author_id, series_id, avaliability):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
     sql = f"""INSERT INTO Books (title, author, series, availability)
-VALUES ({title}, {author_id}, {series_id}, {avaliability});"""
+VALUES ('{title}', '{author_id}', '{series_id}', '{avaliability}');"""
     cursor.execute(sql)
     results = cursor.fetchall()
     print(results)
     db.close()
 
 def add_member():
+    print('a')
+
 
 # main code
 print("\nWelcome to Libaray Database\n")
+
+#how do i use loops so that it loops around certian sections of code rathe tham the whole code?
+#can i have loops inside loops?
 while True:
     userinput = input("\nEnter 1 to view data\nEnter 2 to edit data\n>> ")
     if userinput == '1':
@@ -597,14 +602,19 @@ while True:
     #Im confused here!
     #wat if they want to add a book with an author that is not in the data base? How does the program know if the book is actually avaliable like if there is someone in the borrowing table?
     if userinput == '2':
-        userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'c' to edit data\n>> ")
-        if userinput5 == 'a':
-            userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add a member")
-            if userinput6 == 'a':
-                title = input("Title: ")
-                author_id = input("Author ID: ")
-                series_id = input("Series ID: ")
-                avaliability = input("Avaliability: ")
-                add_book(title, author_id, series_id, avaliability)
-            if userinput6 == 'b':
-                add_member()
+        userinput8 = input("\nEnter pin to continue: ")
+        if userinput8 == '40981':
+            userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'c' to edit data\n>> ")
+            if userinput5 == 'a':
+                userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add an author\nEnter 'c' to add a series\nEnter 'd' to add a member\n>> ")
+                if userinput6 == 'a':
+                    title = input("\nTitle: ")
+                    author_id = input("Author ID: ")
+                    series_id = input("Series ID: ")
+                    avaliability = input("Avaliability: ")
+                    add_book(title, author_id, series_id, avaliability)
+                if userinput6 == 'd':
+                    add_member()
+        else:
+            print("Incorrect pin!")
+            #how do i get it to loop back to line 602 rather than going back to start?
