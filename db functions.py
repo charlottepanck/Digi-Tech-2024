@@ -535,8 +535,15 @@ def fetch_specific_member(member_id):
     db.close()
 
 
-def add_book():
-
+def add_book(title, author_id, series_id, avaliability):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+    sql = f"""INSERT INTO Books (title, author, series, availability)
+VALUES ({title}, {author_id}, {series_id}, {avaliability});"""
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(results)
+    db.close()
 
 def add_member():
 
