@@ -534,6 +534,12 @@ def fetch_specific_member(member_id):
         print(f"{i[0]:>9} | {i[1]:<{fnlg}} | {i[2]:{elg}} | {i[3]}")
     db.close()
 
+
+def add_book():
+
+
+def add_member():
+
 # main code
 print("\nWelcome to Libaray Database\n")
 while True:
@@ -581,12 +587,17 @@ while True:
                     fetch_young_adults()
                 if userinput7 == 'c':
                     fetch_all_adults()
-
-
-
+    #Im confused here!
+    #wat if they want to add a book with an author that is not in the data base? How does the program know if the book is actually avaliable like if there is someone in the borrowing table?
     if userinput == '2':
         userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'c' to edit data\n>> ")
         if userinput5 == 'a':
             userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add a member")
             if userinput6 == 'a':
-                print('a')
+                title = input("Title: ")
+                author_id = input("Author ID: ")
+                series_id = input("Series ID: ")
+                avaliability = input("Avaliability: ")
+                add_book(title, author_id, series_id, avaliability)
+            if userinput6 == 'b':
+                add_member()
