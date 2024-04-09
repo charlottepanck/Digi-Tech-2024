@@ -1,6 +1,8 @@
 import sqlite3
 
-# functions
+# view functions
+
+
 def fetch_author_id():
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
@@ -357,6 +359,7 @@ ORDER BY Length(title) desc LIMIT 1;"""
         print(f"{i[0]:{fnlg}} | {i[1]:{tlg}} | {i[2]} | {i[3]}")
     db.close()
 
+
 def fetch_young_adults():
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
@@ -377,13 +380,14 @@ def fetch_young_adults():
         emaillength = len(x)
         emailspaces = (emaillength-5) * " "
 
-    sql = "SELECT * FROM Members WHERE Age > 13 and Age < 18;"
+    sql = "SELECT * FROM Members WHERE Age >= 12 and Age < 18;"
     cursor.execute(sql)
     results = cursor.fetchall()
     print(f"Member ID | Name {forenamespaces}| Email {emailspaces}| Age")
     for i in results:
         print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
     db.close()    
+
 
 def fetch_all_minors():
     db = sqlite3.connect('PraticeHome.db')
@@ -442,7 +446,6 @@ def fetch_all_adults():
     for i in results:
         print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
     db.close()
-
 
 
 def fetch_specific_series(id):
@@ -535,18 +538,25 @@ def fetch_specific_member(member_id):
     db.close()
 
 
-def add_book(title, author_id, series_id, avaliability):
+# edit functions
+
+
+def add_book(title, author_id, series_id):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
     sql = f"""INSERT INTO Books (title, author, series, availability)
-VALUES ('{title}', '{author_id}', '{series_id}', '{avaliability}');"""
+VALUES ('{title}', '{author_id}', '{series_id}', 'Avaliable');"""
     cursor.execute(sql)
-    results = cursor.fetchall()
-    print(results)
-    db.close()
+    db.commit()
 
-def add_member():
-    print('a')
+
+def add_member(forename, email, age):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+    sql = f"""INSERT INTO members (forename, email, age)
+VALUES ('{forename}', '{email}', '{age}');"""
+    cursor.execute(sql)
+    db.commit()
 
 
 # main code
@@ -589,8 +599,8 @@ while True:
                     if userinput2 == 'x':
                         break
             if userinput1 == 'b':
+                fetch_all_members()
                 while True:
-                    fetch_all_members()
                     userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to view details of specific member \nEnter 'c' to filter data by age\nEnter 'x' to go back\n>> ")
                     if userinput4 == 'a':
                         fetch_borrowing_table()
@@ -617,19 +627,33 @@ while True:
     #Im confused here!
     #wat if they want to add a book with an author that is not in the data base? How does the program know if the book is actually avaliable like if there is someone in the borrowing table?
     if userinput == '2':
-        userinput8 = input("\nEnter pin to continue: ")
-        if userinput8 == '40981':
-            userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'c' to edit data\n>> ")
-            if userinput5 == 'a':
-                userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add an author\nEnter 'c' to add a series\nEnter 'd' to add a member\n>> ")
-                if userinput6 == 'a':
-                    title = input("\nTitle: ")
-                    author_id = input("Author ID: ")
-                    series_id = input("Series ID: ")
-                    avaliability = input("Avaliability: ")
-                    add_book(title, author_id, series_id, avaliability)
-                if userinput6 == 'd':
-                    add_member()
-        else:
-            print("Incorrect pin!")
-            #how do i get it to loop back to line 602 rather than going back to start?
+        while True:
+            userinput8 = input("\nEnter pin to continue\nEnter 'x' to go back\n>> ")
+            if userinput8 == '40981':
+                while True:
+                    userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'c' to edit data\nEnter 'x' to go back\n>> ")
+                    if userinput5 == 'a':
+                        while True:
+                            userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add an author\nEnter 'c' to add a series\nEnter 'd' to add a member\nEnter 'x' to go back\n>> ")
+                            if userinput6 == 'a':
+                                title = input("\nTitle: ")
+                                author_id = input("Author ID: ")
+                                series_id = input("Series ID: ")
+                                confirmation = input(f"\nYou wish to add '{title}' by {author_id} in {series_id}?\n'yes' to commit change\n'no' to try again\n>> ")
+                                if confirmation == 'yes':
+                                    add_book(title, author_id, series_id)
+                                if confirmation == 'no':
+                                    break
+                            if userinput6 == 'd':
+                                forename = input("\nFullname: ")
+                                email = input("Email: ")
+                                age = input("Age: ")
+                                add_member(forename, email, age)
+                            if userinput6 == 'x':
+                                break
+                    if userinput5 == 'x':
+                        break
+            elif userinput8 == 'x':
+                break
+            else:
+                print("Incorrect pin!")
