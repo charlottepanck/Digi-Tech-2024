@@ -557,48 +557,63 @@ print("\nWelcome to Libaray Database\n")
 while True:
     userinput = input("\nEnter 1 to view data\nEnter 2 to edit data\n>> ")
     if userinput == '1':
-        userinput1 = input("\nEnter 'a' to view book data\nEnter 'b' to view member data\n>> ").lower()
+        while True:
+            userinput1 = input("\nEnter 'a' to view book data\nEnter 'b' to view member data\nEnter 'x' to go back\n>> ").lower()
+            if userinput1 == 'a':
+                fetch_all_books()
+                while True:
+                    userinput2 = input("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book\nEnter 'd' to filter results by avaliability\nEnter 'x' to go back\n>> ").lower()
+                    if userinput2 == 'a':
+                        fetch_author_id()
+                        print("\nEnter Author ID to view books by author (e.g. for J.K. Rowling input '27')")
+                        author = input("Author ID: ")
+                        fetch_books_by_author_id(author)
+                    if userinput2 == 'b':
+                        fetch_all_series()
+                        print("\nEnter Series ID to books in series (e.g. for Harry Potter input '9')")
+                        series = input("Series ID: ")
+                        fetch_specific_series(series)
+                    if userinput2 == 'c':
+                        print("\nEnter Book ID to view details (e.g. for Harry Potter and the Sorcerer's Stone input '56')")
+                        book = input("Book ID: ")
+                        fetch_specific_book(book)
+                    if userinput2 == 'd':
+                        while True:
+                            userinput3 = input("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books\nEnter 'x' to go back\n>> ")
+                            if userinput3 == 'a':
+                                fetch_all_avaliable_books()
+                            if userinput3 == 'b':
+                                fetch_all_unavaliable_books()
+                            if userinput3 == 'x':
+                                break
+                    if userinput2 == 'x':
+                        break
+            if userinput1 == 'b':
+                while True:
+                    fetch_all_members()
+                    userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to view details of specific member \nEnter 'c' to filter data by age\nEnter 'x' to go back\n>> ")
+                    if userinput4 == 'a':
+                        fetch_borrowing_table()
+                    if userinput4 == 'b':
+                        print("\nEnter member id to view details (e.g. for Belle Rungrojthanacorn input '9')")
+                        member = input("Member ID: ")
+                        fetch_specific_member(member)
+                    if userinput4 == 'c':
+                        while True:
+                            userinput7 = input("\nEnter 'a' to filter by children (under 12)\nEnter 'b' to filter by young adults (ages 12 to 17)\nEnter 'c' to filter by Adults (18+)\nEnter 'x' to go back\n>> ")
+                            if userinput7 == 'a':
+                                fetch_all_minors()
+                            if userinput7 == 'b':
+                                fetch_young_adults()
+                            if userinput7 == 'c':
+                                fetch_all_adults()
+                            if userinput7 == 'x':
+                                break
+                    if userinput4 == 'x':
+                        break
+            if userinput1 == 'x':
+                break
 
-        if userinput1 == 'a':
-            fetch_all_books()
-            userinput2 = input("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book\nEnter 'd' to filter results by avaliability\n>> ").lower()
-            if userinput2 == 'a':
-                fetch_author_id()
-                print("\nEnter Author ID to view books by author (e.g. for J.K. Rowling input '27')")
-                author = input("Author ID: ")
-                fetch_books_by_author_id(author)
-            if userinput2 == 'b':
-                fetch_all_series()
-                print("\nEnter Series ID to books in series (e.g. for Harry Potter input '9')")
-                series = input("Series ID: ")
-                fetch_specific_series(series)
-            if userinput2 == 'c':
-                print("\nEnter Book ID to view details (e.g. for Harry Potter and the Sorcerer's Stone input '56')")
-                book = input("Book ID: ")
-                fetch_specific_book(book)
-            if userinput2 == 'd':
-                userinput3 = input("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books\n>> ")
-                if userinput3 == 'a':
-                    fetch_all_avaliable_books()
-                if userinput3 == 'b':
-                    fetch_all_unavaliable_books()
-        if userinput1 == 'b':
-            fetch_all_members()
-            userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to view details of specific member \nEnter 'c' to filter data by age\n>> ")
-            if userinput4 == 'a':
-                fetch_borrowing_table()
-            if userinput4 == 'b':
-                print("\nEnter member id to view details (e.g. for Belle Rungrojthanacorn input '9')")
-                member = input("Member ID: ")
-                fetch_specific_member(member)
-            if userinput4 == 'c':
-                userinput7 = input("\nEnter 'a' to filter by children (under 12)\nEnter 'b' to filter by young adults (ages 12 to 17)\nEnter 'c' to filter by Adults (18+)\n>> ")
-                if userinput7 == 'a':
-                    fetch_all_minors()
-                if userinput7 == 'b':
-                    fetch_young_adults()
-                if userinput7 == 'c':
-                    fetch_all_adults()
     #Im confused here!
     #wat if they want to add a book with an author that is not in the data base? How does the program know if the book is actually avaliable like if there is someone in the borrowing table?
     if userinput == '2':
