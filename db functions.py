@@ -542,7 +542,18 @@ def replace_authorid_with_name(author_id):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
 
-    sql = f"SELECT Author.name FROM Books LEFT JOIN Author ON Books.author = Author.id Where id == {author_id};"
+    sql = f"SELECT Author.name FROM Books LEFT JOIN Author ON Books.author = Author.id Where id == {author_id} LIMIT 1;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    for i in results:
+        return i[0]
+    db.close()
+
+def replace_seriesid_with_name(series_id):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    sql = f"SELECT Series.series_title FROM Books LEFT JOIN Series ON Books.series = series.id Where id == {series_id} LIMIT 1;"
     cursor.execute(sql)
     results = cursor.fetchall()
     for i in results:
@@ -571,8 +582,17 @@ VALUES ('{forename}', '{email}', '{age}');"""
     db.commit()
 
 
+def add_author(name):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+    sql = f"""INSERT INTO Author (name)
+VALUES ('{name}');"""
+    cursor.execute(sql)
+    db.commit()
+
+
 # main code
-print("\nWelcome to Libaray Database\n")
+print("\nWelcome to Libaray Database")
 
 #how do i use loops so that it loops around certian sections of code rathe tham the whole code?
 #can i have loops inside loops?
@@ -635,9 +655,9 @@ while True:
                         break
             if userinput1 == 'x':
                 break
-
-    #Im confused here!
-    #wat if they want to add a book with an author that is not in the data base? How does the program know if the book is actually avaliable like if there is someone in the borrowing table?
+            if userinput1 != 'a' or userinput1 != 'b' or userinput1 != 'x':
+                print("\nInvalid input. Please enter 'a', 'b', or 'x'.")
+            
     if userinput == '2':
         while True:
             userinput8 = input("\nEnter pin to continue\nEnter 'x' to go back\n>> ")
@@ -649,18 +669,33 @@ while True:
                             userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add an author\nEnter 'c' to add a series\nEnter 'd' to add a member\nEnter 'x' to go back\n>> ")
                             if userinput6 == 'a':
                                 title = input("\nTitle: ")
+                                fetch_author_id()
                                 author_id = input("Author ID: ")
+                                fetch_all_series()
                                 series_id = input("Series ID: ")
-                                confirmation = input(f"\nYou wish to add '{title}' by {replace_authorid_with_name(author_id)} in {series_id}?\n'yes' to commit change\n'no' to try again\n>> ")
+                                confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
                                 if confirmation == 'yes':
                                     add_book(title, author_id, series_id)
                                 if confirmation == 'no':
                                     break
+                            if userinput6 == 'b':
+                                name = input("\nAuthor's Full name: ")
+                                confirmation = input(f"\nYou wish to add: Author's Fullname: {name}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
+                                if confirmation == 'yes':
+                                    add_author(name)
+                                if confirmation == 'no':
+                                    break
+                            if userinput6 == 'c':
+                                print("\nHaven't written this code yet :p")
                             if userinput6 == 'd':
                                 forename = input("\nFullname: ")
                                 email = input("Email: ")
                                 age = input("Age: ")
-                                add_member(forename, email, age)
+                                confirmation = input(f"\nYou wish to add: Fullname: {forename}, Email adress: {email}, Age: {age}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
+                                if confirmation == 'yes':
+                                    add_member(forename, email, age)
+                                if confirmation == 'no':
+                                    break
                             if userinput6 == 'x':
                                 break
                     if userinput5 == 'x':
@@ -669,3 +704,5 @@ while True:
                 break
             else:
                 print("Incorrect pin!")
+    if userinput != 1 or userinput != 2:
+        print("\nInvalid input. Please enter '1' or '2'.")
