@@ -594,8 +594,6 @@ VALUES ('{name}');"""
 # main code
 print("\nWelcome to Libaray Database")
 
-#how do i use loops so that it loops around certian sections of code rathe tham the whole code?
-#can i have loops inside loops?
 while True:
     userinput = input("\nEnter 1 to view data\nEnter 2 to edit data\n>> ")
     if userinput == '1':
@@ -609,6 +607,7 @@ while True:
                         fetch_author_id()
                         print("\nEnter Author ID to view books by author (e.g. for J.K. Rowling input '27')")
                         author = input("Author ID: ")
+                        if author == 
                         fetch_books_by_author_id(author)
                     if userinput2 == 'b':
                         fetch_all_series()
