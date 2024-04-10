@@ -538,6 +538,18 @@ def fetch_specific_member(member_id):
     db.close()
 
 
+def replace_authorid_with_name(author_id):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+
+    sql = f"SELECT Author.name FROM Books LEFT JOIN Author ON Books.author = Author.id Where id == {author_id};"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    for i in results:
+        return i[0]
+    db.close()
+
+
 # edit functions
 
 
@@ -639,7 +651,7 @@ while True:
                                 title = input("\nTitle: ")
                                 author_id = input("Author ID: ")
                                 series_id = input("Series ID: ")
-                                confirmation = input(f"\nYou wish to add '{title}' by {author_id} in {series_id}?\n'yes' to commit change\n'no' to try again\n>> ")
+                                confirmation = input(f"\nYou wish to add '{title}' by {replace_authorid_with_name(author_id)} in {series_id}?\n'yes' to commit change\n'no' to try again\n>> ")
                                 if confirmation == 'yes':
                                     add_book(title, author_id, series_id)
                                 if confirmation == 'no':
