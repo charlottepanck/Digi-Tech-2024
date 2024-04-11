@@ -87,7 +87,7 @@ def fetch_all_unavaliable_books():
 
     # author column format
     sql2 = """SELECT author.name
-FROM books 
+FROM books
 LEFT JOIN author ON books.author = author.id
 WHERE availability = 'Unavaliable'
 ORDER BY Length(name) desc LIMIT 1;"""
@@ -100,7 +100,7 @@ ORDER BY Length(name) desc LIMIT 1;"""
 
     # series column format
     sql3 = """SELECT series.series_title
-FROM books 
+FROM books
 LEFT JOIN series ON books.series = series.id
 WHERE availability = 'Unavaliable'
 ORDER BY Length(series_title) desc LIMIT 1;"""
@@ -141,7 +141,7 @@ def fetch_all_avaliable_books():
 
     # author column format
     sql2 = """SELECT author.name
-FROM books 
+FROM books
 LEFT JOIN author ON books.author = author.id
 WHERE availability = 'Avaliable'
 ORDER BY Length(name) desc LIMIT 1;"""
@@ -154,7 +154,7 @@ ORDER BY Length(name) desc LIMIT 1;"""
 
     # series column format
     sql3 = """SELECT series.series_title
-FROM books 
+FROM books
 LEFT JOIN series ON books.series = series.id
 WHERE availability = 'Avaliable'
 ORDER BY Length(series_title) desc LIMIT 1;"""
@@ -218,8 +218,8 @@ def fetch_books_by_author_id(author_id):
     cursor = db.cursor()
 
     # title column format
-    sql2 = f"""SELECT Title FROM Books 
-WHERE Author == {author_id} 
+    sql2 = f"""SELECT Title FROM Books
+WHERE Author == {author_id}
 ORDER BY Length(title) desc LIMIT 1;"""
     cursor.execute(sql2)
     results = cursor.fetchone()
@@ -229,8 +229,8 @@ ORDER BY Length(title) desc LIMIT 1;"""
         tsp = (tlg-5) * " "
 
     # author column format
-    sql3 = f"""SELECT name FROM author 
-WHERE id == {author_id} 
+    sql3 = f"""SELECT name FROM author
+WHERE id == {author_id}
 ORDER BY Length(name) desc LIMIT 1;"""
     cursor.execute(sql3)
     results = cursor.fetchone()
@@ -327,7 +327,7 @@ def fetch_borrowing_table():
     cursor = db.cursor()
 
     # forename column format
-    sql1 = """SELECT forename FROM Members 
+    sql1 = """SELECT forename FROM Members
 ORDER BY Length(forename) desc LIMIT 1;"""
     cursor.execute(sql1)
     results = cursor.fetchone()
@@ -337,7 +337,7 @@ ORDER BY Length(forename) desc LIMIT 1;"""
         fnsp = (fnlg-4) * " "
 
     # title column format
-    sql2 = """SELECT title FROM books 
+    sql2 = """SELECT title FROM books
 ORDER BY Length(title) desc LIMIT 1;"""
     cursor.execute(sql2)
     results = cursor.fetchone()
@@ -386,7 +386,7 @@ def fetch_young_adults():
     print(f"Member ID | Name {forenamespaces}| Email {emailspaces}| Age")
     for i in results:
         print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
-    db.close()    
+    db.close()
 
 
 def fetch_all_minors():
@@ -430,7 +430,6 @@ def fetch_all_adults():
         forenamelength = len(x)
         forenamespaces = (forenamelength-4) * " "
 
-
     sql3 = "SELECT email FROM Members ORDER BY Length(email) desc LIMIT 1;"
     cursor.execute(sql3)
     results = cursor.fetchone()
@@ -453,16 +452,16 @@ def fetch_specific_series(id):
     cursor = db.cursor()
 
     # series id
-    sqla = f"""SELECT series FROM Books 
+    sqla = f"""SELECT series FROM Books
 WHERE series = {id};"""
     cursor.execute(sqla)
     results = cursor.fetchone()
     for i in results:
-        seriesid = i   
+        seriesid = i
 
     # title column format
     sql1 = f"""SELECT title FROM books
-WHERE series == {id} 
+WHERE series == {id}
 ORDER BY Length(title) desc LIMIT 1;"""
     cursor.execute(sql1)
     results = cursor.fetchone()
@@ -470,7 +469,7 @@ ORDER BY Length(title) desc LIMIT 1;"""
         x = (f"{i}")
         tlg = len(x)
         tsp = (tlg-5) * " "
-    
+
     # author column format
     sql2 = f"""SELECT author.name
 FROM books
@@ -492,7 +491,7 @@ WHERE series == {id} ORDER BY Length(name) desc LIMIT 1;"""
         slg = len(x)
         ssp = (slg-6) * " "
 
-    sql = f"""SELECT Books.title, Author.name, series.series_title, books.availability 
+    sql = f"""SELECT Books.title, Author.name, series.series_title, books.availability
 FROM Books
 LEFT JOIN Author ON Books.author = Author.id
 LEFT JOIN Series ON Books.series = Series.id
@@ -548,6 +547,7 @@ def replace_authorid_with_name(author_id):
     for i in results:
         return i[0]
     db.close()
+
 
 def replace_seriesid_with_name(series_id):
     db = sqlite3.connect('PraticeHome.db')
@@ -607,7 +607,7 @@ while True:
                         fetch_author_id()
                         print("\nEnter Author ID to view books by author (e.g. for J.K. Rowling input '27')")
                         author = input("Author ID: ")
-                        if author == 
+                        # if author ==
                         fetch_books_by_author_id(author)
                     if userinput2 == 'b':
                         fetch_all_series()
@@ -641,7 +641,7 @@ while True:
                         fetch_specific_member(member)
                     if userinput4 == 'c':
                         while True:
-                            userinput7 = input("\nEnter 'a' to filter by children (under 12)\nEnter 'b' to filter by young adults (ages 12 to 17)\nEnter 'c' to filter by Adults (18+)\nEnter 'x' to go back\n>> ")
+                            userinput7 = input("\nEnter 'a' to view children (under 12)\nEnter 'b' to view young adults (ages 12 to 17)\nEnter 'c' to view Adults (18+)\nEnter 'x' to go back\n>> ")
                             if userinput7 == 'a':
                                 fetch_all_minors()
                             if userinput7 == 'b':
@@ -656,7 +656,7 @@ while True:
                 break
             if userinput1 != 'a' or userinput1 != 'b' or userinput1 != 'x':
                 print("\nInvalid input. Please enter 'a', 'b', or 'x'.")
-            
+
     if userinput == '2':
         while True:
             userinput8 = input("\nEnter pin to continue\nEnter 'x' to go back\n>> ")
