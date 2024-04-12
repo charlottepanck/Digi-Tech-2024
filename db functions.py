@@ -606,18 +606,44 @@ while True:
                     if userinput2 == 'a':
                         fetch_author_id()
                         print("\nEnter Author ID to view books by author (e.g. for J.K. Rowling input '27')")
-                        author = input("Author ID: ")
-                        # if author ==
-                        fetch_books_by_author_id(author)
+                        while True:
+                            try:
+                                author = input("Author ID: ")
+                                check = author.isnumeric()
+                                if check == True:
+                                    fetch_books_by_author_id(author)
+                                    break
+                                if check == False:
+                                    print("Oops! That is not a valid Author ID\n")
+                            except TypeError:
+                                print("Oops! That is either not a valid Author ID or this Author has no books in our Library.\n")
                     if userinput2 == 'b':
                         fetch_all_series()
                         print("\nEnter Series ID to books in series (e.g. for Harry Potter input '9')")
-                        series = input("Series ID: ")
-                        fetch_specific_series(series)
+                        while True:
+                            try:
+                                series = input("Series ID: ")
+                                check = series.isnumeric()
+                                if check == True:
+                                    fetch_specific_series(series)
+                                    break
+                                if check == False:
+                                    print("Oops! That is not a valid Series ID.\n")
+                            except TypeError:
+                                print("Oops! That is either not a valid Series ID or there are no books in our library that are apart of this Series.\n")
                     if userinput2 == 'c':
                         print("\nEnter Book ID to view details (e.g. for Harry Potter and the Sorcerer's Stone input '56')")
-                        book = input("Book ID: ")
-                        fetch_specific_book(book)
+                        while True:
+                            try:
+                                book = input("Book ID: ")
+                                check = book.isnumeric()
+                                if check == True:
+                                    fetch_specific_book(book)
+                                    break
+                                if check == False:
+                                    print("Oops! That is not a valid Book ID.")
+                            except TypeError:
+                                print("Oops! That is not a valid Book ID.")
                     if userinput2 == 'd':
                         while True:
                             userinput3 = input("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books\nEnter 'x' to go back\n>> ")
@@ -625,10 +651,12 @@ while True:
                                 fetch_all_avaliable_books()
                             if userinput3 == 'b':
                                 fetch_all_unavaliable_books()
-                            if userinput3 == 'x':
+                            elif userinput3 == 'x':
                                 break
                     if userinput2 == 'x':
                         break
+                    else:
+                        print("Invalid input.")
             if userinput1 == 'b':
                 fetch_all_members()
                 while True:
