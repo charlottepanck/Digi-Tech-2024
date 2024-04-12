@@ -560,6 +560,20 @@ def replace_seriesid_with_name(series_id):
         return i[0]
     db.close()
 
+def check_id(table, userinputid):
+    #   checks if inputed id exists
+    db = sqlite3.connect("PraticeHome.db")
+    cursor = db.cursor()
+    sql = f"SELECT id FROM {table} WHERE {userinputid} = id;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    x = len(results)
+    db.close()
+    if x <= 0:
+        return False
+    else:    
+        return True
+    
 
 # edit functions
 
@@ -705,25 +719,36 @@ while True:
                                 flag = False
                                 while True:
                                     author_id = input("Author ID: ")
-                                    check = author_id.isnumeric()
-                                    if check == True:
-                                        fetch_all_series()
-                                        while True:
-                                            series_id = input("Series ID: ")
-                                            check1 = series_id.isnumeric()
-                                            if check1 == True:
-                                                confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
-                                                if confirmation == 'yes':
-                                                    add_book(title, author_id, series_id)
-                                                    flag = True
-                                                    break
-                                                if confirmation == 'no':
-                                                    flag = True
-                                                    break
-                                                if check1 == False:
+                                    if author_id.isnumeric() == True:
+                                        check = check_id("author", author_id)
+                                        if check == True:
+                                            fetch_all_series()
+                                            while True:
+                                                series_id = input("Series ID: ")
+                                                if series_id.isnumeric() == True:
+                                                    check1 = check_id("series", series_id)
+                                                    if check1 == True:
+                                                        while True:
+                                                            confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
+                                                            if confirmation == 'yes':
+                                                                add_book(title, author_id, series_id)
+                                                                flag = True
+                                                                break
+                                                            if confirmation == 'no':
+                                                                flag = True
+                                                                break
+                                                            if confirmation != 'yes' or confirmation != 'no':
+                                                                print('Oops! Invalid Input. Please input "yes" or "no".')
+                                                    if check1 == False:
+                                                        print("Oops! Invalid Series ID.\n")
+                                                if series_id.isnumeric() == False:
                                                     print("Oops! Invalid Series ID.\n")
-                                    if check == False:
-                                            print("Oops! Invalid Author ID.\n")
+                                                if flag == True:
+                                                    break
+                                        if check == False:
+                                                print("Oops! Invalid Author ID.\n")
+                                    if author_id.isnumeric() == False:
+                                        print("Oops! Invalid Author ID.\n")
                                     if flag == True:
                                         break
                             if userinput6 == 'b':

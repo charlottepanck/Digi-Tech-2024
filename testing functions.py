@@ -163,9 +163,22 @@ VALUES ('{title}', '{author_id}', '{series_id}', '{avaliability}');"""
     print(results)
     db.close()
 
-title = input("Title: ")
-author_id = input("Author ID: ")
-series_id = input("Series ID: ")
-avaliability = input("Avaliability: ")
-add_book(title, author_id, series_id, avaliability)
-fetch_all_books()
+def check_id(table, userinputid):
+    #   checks if inputed id exists
+    db = sqlite3.connect("PraticeHome.db")
+    cursor = db.cursor()
+    sql = f"SELECT id FROM {table} WHERE {userinputid} = id;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    x = len(results)
+    db.close()
+    if x <= 0:
+        return False
+    else:    
+        return True
+
+a = check_id("author", "qej")
+if a == False:
+    print("False")
+if a == True:
+    print("True")
