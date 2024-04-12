@@ -655,8 +655,6 @@ while True:
                                 break
                     if userinput2 == 'x':
                         break
-                    else:
-                        print("Invalid input.")
             if userinput1 == 'b':
                 fetch_all_members()
                 while True:
@@ -665,8 +663,17 @@ while True:
                         fetch_borrowing_table()
                     if userinput4 == 'b':
                         print("\nEnter member id to view details (e.g. for Belle Rungrojthanacorn input '9')")
-                        member = input("Member ID: ")
-                        fetch_specific_member(member)
+                        while True:
+                            try:
+                                member = input("Member ID: ")
+                                check = member.isnumeric()
+                                if check == True:
+                                    fetch_specific_member(member)
+                                    break
+                                if check == False:
+                                    print("Oops! That is not a valid Member ID.")
+                            except TypeError:
+                                print("Oops! That is not a valid Member ID.")
                     if userinput4 == 'c':
                         while True:
                             userinput7 = input("\nEnter 'a' to view children (under 12)\nEnter 'b' to view young adults (ages 12 to 17)\nEnter 'c' to view Adults (18+)\nEnter 'x' to go back\n>> ")
@@ -682,8 +689,6 @@ while True:
                         break
             if userinput1 == 'x':
                 break
-            if userinput1 != 'a' or userinput1 != 'b' or userinput1 != 'x':
-                print("\nInvalid input. Please enter 'a', 'b', or 'x'.")
 
     if userinput == '2':
         while True:
@@ -697,14 +702,34 @@ while True:
                             if userinput6 == 'a':
                                 title = input("\nTitle: ")
                                 fetch_author_id()
-                                author_id = input("Author ID: ")
-                                fetch_all_series()
-                                series_id = input("Series ID: ")
-                                confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
-                                if confirmation == 'yes':
-                                    add_book(title, author_id, series_id)
-                                if confirmation == 'no':
-                                    break
+                                flag = False
+                                while True:
+                                    try:
+                                        author_id = input("Author ID: ")
+                                        check = author_id.isnumeric()
+                                        if check == True:
+                                            fetch_all_series()
+                                            while True:
+                                                try:
+                                                    series_id = input("Series ID: ")
+                                                    check1 = series_id.isnumeric()
+                                                    if check1 == True:
+                                                        confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
+                                                        if confirmation == 'yes':
+                                                            add_book(title, author_id, series_id)
+                                                        if confirmation == 'no':
+                                                            flag = True
+                                                            break
+                                                    if check1 == False:
+                                                        print("Oops! Invalid Series ID.")
+                                                except TypeError:
+                                                    print("Oops! Invalid Series ID.")
+                                        if check == False:
+                                            print("Oops! Invalid Author ID.")
+                                        if flag == True:
+                                            break
+                                    except TypeError:
+                                        print("Oops! Invalid Author ID.")
                             if userinput6 == 'b':
                                 name = input("\nAuthor's Full name: ")
                                 confirmation = input(f"\nYou wish to add: Author's Fullname: {name}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
@@ -725,11 +750,13 @@ while True:
                                     break
                             if userinput6 == 'x':
                                 break
+                    if userinput5 == 'b':
+                        print("\nHaven't written this code yet :p")
+                    if userinput5 == 'c':
+                        print("\nHaven't written this code yet :p")
                     if userinput5 == 'x':
                         break
             elif userinput8 == 'x':
                 break
             else:
                 print("Incorrect pin!")
-    if userinput != 1 or userinput != 2:
-        print("\nInvalid input. Please enter '1' or '2'.")
