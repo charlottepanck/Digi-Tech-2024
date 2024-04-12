@@ -541,7 +541,7 @@ def replace_authorid_with_name(author_id):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
 
-    sql = f"SELECT Author.name FROM Books LEFT JOIN Author ON Books.author = Author.id Where id == {author_id} LIMIT 1;"
+    sql = f"SELECT Author.name FROM Author Where id == {author_id} LIMIT 1;"
     cursor.execute(sql)
     results = cursor.fetchall()
     for i in results:
@@ -553,7 +553,7 @@ def replace_seriesid_with_name(series_id):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
 
-    sql = f"SELECT Series.series_title FROM Books LEFT JOIN Series ON Books.series = series.id Where id == {series_id} LIMIT 1;"
+    sql = f"SELECT Series.series_title FROM Series Where id == {series_id} LIMIT 1;"
     cursor.execute(sql)
     results = cursor.fetchall()
     for i in results:
@@ -717,6 +717,8 @@ while True:
                                                         confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
                                                         if confirmation == 'yes':
                                                             add_book(title, author_id, series_id)
+                                                            flag = True
+                                                            break
                                                         if confirmation == 'no':
                                                             flag = True
                                                             break
