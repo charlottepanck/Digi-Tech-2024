@@ -704,34 +704,28 @@ while True:
                                 fetch_author_id()
                                 flag = False
                                 while True:
-                                    try:
-                                        author_id = input("Author ID: ")
-                                        check = author_id.isnumeric()
-                                        if check == True:
-                                            fetch_all_series()
-                                            while True:
-                                                try:
-                                                    series_id = input("Series ID: ")
-                                                    check1 = series_id.isnumeric()
-                                                    if check1 == True:
-                                                        confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
-                                                        if confirmation == 'yes':
-                                                            add_book(title, author_id, series_id)
-                                                            flag = True
-                                                            break
-                                                        if confirmation == 'no':
-                                                            flag = True
-                                                            break
-                                                    if check1 == False:
-                                                        print("Oops! Invalid Series ID.")
-                                                except TypeError:
-                                                    print("Oops! Invalid Series ID.")
-                                        if check == False:
-                                            print("Oops! Invalid Author ID.")
-                                        if flag == True:
-                                            break
-                                    except TypeError:
-                                        print("Oops! Invalid Author ID.")
+                                    author_id = input("Author ID: ")
+                                    check = author_id.isnumeric()
+                                    if check == True:
+                                        fetch_all_series()
+                                        while True:
+                                            series_id = input("Series ID: ")
+                                            check1 = series_id.isnumeric()
+                                            if check1 == True:
+                                                confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
+                                                if confirmation == 'yes':
+                                                    add_book(title, author_id, series_id)
+                                                    flag = True
+                                                    break
+                                                if confirmation == 'no':
+                                                    flag = True
+                                                    break
+                                                if check1 == False:
+                                                    print("Oops! Invalid Series ID.\n")
+                                    if check == False:
+                                            print("Oops! Invalid Author ID.\n")
+                                    if flag == True:
+                                        break
                             if userinput6 == 'b':
                                 name = input("\nAuthor's Full name: ")
                                 confirmation = input(f"\nYou wish to add: Author's Fullname: {name}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
