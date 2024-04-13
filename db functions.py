@@ -759,11 +759,14 @@ while True:
                                 if confirmation == 'no':
                                     break
                             if userinput6 == 'c':
-                                print("\nHaven't written this code yet :p")
+                                print("\nHaven't written this code yet")
                             if userinput6 == 'd':
                                 forename = input("\nFullname: ")
+                                #check for... a space ' ' as it must be a full name
                                 email = input("Email: ")
+                                #check for... contains '@' and a "."
                                 age = input("Age: ")
+                                #check for... is integer
                                 confirmation = input(f"\nYou wish to add: Fullname: {forename}, Email adress: {email}, Age: {age}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
                                 if confirmation == 'yes':
                                     add_member(forename, email, age)
@@ -772,9 +775,16 @@ while True:
                             if userinput6 == 'x':
                                 break
                     if userinput5 == 'b':
-                        print("\nHaven't written this code yet :p")
+                        while True:
+                            print("\nHaven't finished coding this section yet!!")
+                            userinput9 = input("\nEnter 'a' to remove a book\nEnter 'b' to remove an author\nEnter 'c' to remove a series\nEnter 'd' to remove a member\nEnter 'x' to go back\n>> ").lower()
                     if userinput5 == 'c':
-                        print("\nHaven't written this code yet :p")
+                        while True:
+                            print("\nHaven't finished coding this section yet!!")
+                            userinput10 = input("\nEnter 'a' to edit book data\nEnte 'b' to edit member data\n>> ").lower
+                            if userinput10 == 'a':
+                                while True:
+                                    print("\nEnter 'a' to change book title\nEnter 'b' to change author name\nEnter 'c' to change series name\n>> ").lower()
                     if userinput5 == 'x':
                         break
             elif userinput8 == 'x':
