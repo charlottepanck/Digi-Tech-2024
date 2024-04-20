@@ -907,7 +907,9 @@ while True:
                                             break
                                         if confirmation != 'yes' or confirmation != 'no':
                                             print("Oops! Invalid input. Please enter 'yes' or 'no'.")
-            elif userinput8 == 'x':
+                    if userinput5 == 'x':
+                        break
+            if userinput8 == 'x':
                 break
             else:
                 print("Incorrect pin!")
