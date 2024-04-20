@@ -2,9 +2,10 @@ import sqlite3
 
 # view functions
 
+DB = 'PraticeHome.db'
 
 def fetch_author_id():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = "SELECT * FROM Author;"
     cursor.execute(sql)
@@ -16,7 +17,7 @@ def fetch_author_id():
 
 
 def fetch_all_series():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = "SELECT * FROM Series;"
     cursor.execute(sql)
@@ -27,7 +28,7 @@ def fetch_all_series():
 
 
 def fetch_all_books():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # title column format
@@ -73,7 +74,7 @@ def fetch_all_books():
 
 
 def fetch_all_unavaliable_books():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # title column format
@@ -127,7 +128,7 @@ ORDER BY Length(series_title) desc LIMIT 1;"""
 
 
 def fetch_all_avaliable_books():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # title column format
@@ -181,7 +182,7 @@ ORDER BY Length(series_title) desc LIMIT 1;"""
 
 
 def fetch_all_members():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # forename column format
@@ -214,7 +215,7 @@ def fetch_all_members():
 
 
 def fetch_books_by_author_id(author_id):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # title column format
@@ -268,7 +269,7 @@ ORDER BY Length(series_title) desc LIMIT 1;"""
 
 
 def fetch_specific_book(book_id):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # title column format
@@ -323,7 +324,7 @@ WHERE book_id = {book_id};"""
 
 
 def fetch_borrowing_table():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # forename column format
@@ -361,7 +362,7 @@ ORDER BY Length(title) desc LIMIT 1;"""
 
 
 def fetch_young_adults():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
@@ -390,7 +391,7 @@ def fetch_young_adults():
 
 
 def fetch_all_minors():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
@@ -419,7 +420,7 @@ def fetch_all_minors():
 
 
 def fetch_all_adults():
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
@@ -448,7 +449,7 @@ def fetch_all_adults():
 
 
 def fetch_specific_series(id):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # series id
@@ -505,7 +506,7 @@ WHERE series = {id};"""
 
 
 def fetch_specific_member(member_id):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     # forename column format
@@ -538,7 +539,7 @@ def fetch_specific_member(member_id):
 
 
 def replace_authorid_with_name(author_id):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     sql = f"SELECT Author.name FROM Author Where id == {author_id} LIMIT 1;"
@@ -550,7 +551,7 @@ def replace_authorid_with_name(author_id):
 
 
 def replace_seriesid_with_name(series_id):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     sql = f"SELECT Series.series_title FROM Series Where id == {series_id} LIMIT 1;"
@@ -580,7 +581,7 @@ def check_id(table, userinputid):
 
 
 def add_book(title, author_id, series_id):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = f"""INSERT INTO Books (title, author, series, availability)
 VALUES ("{title}", "{author_id}", "{series_id}", "Avaliable");"""
@@ -589,7 +590,7 @@ VALUES ("{title}", "{author_id}", "{series_id}", "Avaliable");"""
 
 
 def add_member(forename, email, age):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = f"""INSERT INTO members (forename, email, age)
 VALUES ('{forename}', '{email}', '{age}');"""
@@ -598,7 +599,7 @@ VALUES ('{forename}', '{email}', '{age}');"""
 
 
 def add_author(name):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = f"""INSERT INTO Author (name)
 VALUES ("{name}");"""
@@ -607,7 +608,7 @@ VALUES ("{name}");"""
 
 
 def add_series(series):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = f'INSERT INTO Series (series_title) VALUES ("{series}");'
     cursor.execute(sql)
@@ -615,7 +616,7 @@ def add_series(series):
 
 
 def remove_book(bookid):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = f"DELETE FROM Books WHERE book_id = {bookid};"
     cursor.execute(sql)
@@ -623,7 +624,7 @@ def remove_book(bookid):
 
 
 def remove_author(authorid):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = f"DELETE FROM Author WHERE id = {authorid};"
     cursor.execute(sql)
@@ -631,7 +632,7 @@ def remove_author(authorid):
 
 
 def remove_series(seriesid):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = f"DELETE FROM Series WHERE id = {seriesid};"
     cursor.execute(sql)
@@ -639,7 +640,7 @@ def remove_series(seriesid):
 
 
 def remove_member(memberid):
-    db = sqlite3.connect('PraticeHome.db')
+    db = sqlite3.connect(DB)
     cursor = db.cursor()
     sql = f"DELETE FROM Members WHERE member_id = {memberid};"
     cursor.execute(sql)
