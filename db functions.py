@@ -638,9 +638,16 @@ def remove_series(seriesid):
     db.commit()
 
 
+def remove_member(memberid):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+    sql = f"DELETE FROM Members WHERE member_id = {memberid};"
+    cursor.execute(sql)
+    db.commit()
+
+
 # main code
 print("\nWelcome to Libaray Database")
-
 while True:
     userinput = input("\nEnter 1 to view data\nEnter 2 to edit data\n>> ")
     if userinput == '1':
@@ -819,26 +826,30 @@ while True:
                                             if check1 == True:
                                             #check for contains '@'
                                                 while True:
+                                                    if flag == True:
+                                                        break
                                                     age = input("Age: ")
                                                     if age.isnumeric() == False:
                                                         print("Invalid age.")
                                                     if age.isnumeric() == True:
                                                         #check for... is a number
-                                                        confirmation = input(f"\nYou wish to add: Fullname: {forename}, Email adress: {email}, Age: {age}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
-                                                        if confirmation == 'yes':
-                                                            add_member(forename, email, age)
-                                                            flag = True
-                                                            break
-                                                        if confirmation == 'no':
-                                                            flag = True
-                                                            break
-                                                            # use flags to get out of while loop
+                                                        while True:
+                                                            confirmation = input(f"\nYou wish to add: Fullname: {forename}, Email adress: {email}, Age: {age}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
+                                                            if confirmation == 'yes':
+                                                                add_member(forename, email, age)
+                                                                flag = True
+                                                                break
+                                                            if confirmation == 'no':
+                                                                flag = True
+                                                                break
+                                                            if confirmation != 'yes' or confirmation != 'no':
+                                                                print("Oops! Invalid input. Please enter 'yes' or 'no'.")
+                                                                # use flags to get out of while loop
                             if userinput6 == 'x':
                                 break
 
                     if userinput5 == 'b':
                         while True:
-                            print("\nHaven't finished coding this section yet!!")
                             userinput9 = input("\nEnter 'a' to remove a book\nEnter 'b' to remove an author\nEnter 'c' to remove a series\nEnter 'd' to remove a member\nEnter 'x' to go back\n>> ").lower()
                             if userinput9 == 'a':
                                 fetch_all_books()
@@ -886,10 +897,15 @@ while True:
                                     print("Invalid input. Try again!")
                                     break
                                 if memberid.isnumeric() == True:
-                                    confirmation = input(f"\nYou wish to remove {memberid} from library system?\nEnter 'yes' to remove member\nEnter 'no' to cancel\n>> ").lower()
-                                
-
-
+                                    while True:
+                                        confirmation = input(f"\nYou wish to remove {memberid} from library system?\nEnter 'yes' to remove member\nEnter 'no' to cancel\n>> ").lower()
+                                        if confirmation == 'no':
+                                            break
+                                        if confirmation == 'yes':
+                                            remove_member(memberid)
+                                            break
+                                        if confirmation != 'yes' or confirmation != 'no':
+                                            print("Oops! Invalid input. Please enter 'yes' or 'no'.")
             elif userinput8 == 'x':
                 break
             else:
