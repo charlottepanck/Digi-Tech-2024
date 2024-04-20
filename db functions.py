@@ -582,7 +582,7 @@ def add_book(title, author_id, series_id):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
     sql = f"""INSERT INTO Books (title, author, series, availability)
-VALUES ('{title}', '{author_id}', '{series_id}', 'Avaliable');"""
+VALUES ("{title}", "{author_id}", "{series_id}", "Avaliable");"""
     cursor.execute(sql)
     db.commit()
 
@@ -600,10 +600,18 @@ def add_author(name):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
     sql = f"""INSERT INTO Author (name)
-VALUES ('{name}');"""
+VALUES ("{name}");"""
     cursor.execute(sql)
     db.commit()
 
+
+def add_series(series):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+    sql = f'
+    INSERT INTO Series (series_title) VALUES ("{series}");'
+    cursor.execute(sql)
+    db.commit()
 
 # main code
 print("\nWelcome to Libaray Database")
@@ -760,6 +768,12 @@ while True:
                                     break
                             if userinput6 == 'c':
                                 print("\nHaven't written this code yet")
+                                series = input("\nSeries title: ")
+                                confirmation = input(f"\nYou wish to add: Series title: {series}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
+                                if confirmation == 'yes':
+                                    add_series(series)
+                                if confirmation == 'no':
+                                    break
                             if userinput6 == 'd':
                                 forename = input("\nFullname: ")
                                 #check for... a space ' ' as it must be a full name
