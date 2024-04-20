@@ -608,8 +608,7 @@ VALUES ("{name}");"""
 def add_series(series):
     db = sqlite3.connect('PraticeHome.db')
     cursor = db.cursor()
-    sql = f'
-    INSERT INTO Series (series_title) VALUES ("{series}");'
+    sql = f'INSERT INTO Series (series_title) VALUES ("{series}");'
     cursor.execute(sql)
     db.commit()
 
@@ -767,7 +766,6 @@ while True:
                                 if confirmation == 'no':
                                     break
                             if userinput6 == 'c':
-                                print("\nHaven't written this code yet")
                                 series = input("\nSeries title: ")
                                 confirmation = input(f"\nYou wish to add: Series title: {series}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
                                 if confirmation == 'yes':
@@ -775,17 +773,40 @@ while True:
                                 if confirmation == 'no':
                                     break
                             if userinput6 == 'd':
-                                forename = input("\nFullname: ")
-                                #check for... a space ' ' as it must be a full name
-                                email = input("Email: ")
-                                #check for... contains '@' and a "."
-                                age = input("Age: ")
-                                #check for... is integer
-                                confirmation = input(f"\nYou wish to add: Fullname: {forename}, Email adress: {email}, Age: {age}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
-                                if confirmation == 'yes':
-                                    add_member(forename, email, age)
-                                if confirmation == 'no':
-                                    break
+                                flag = False
+                                while True:
+                                    if flag == True:
+                                        break
+                                    forename = input("\nFullname: ")
+                                    check = ' ' in forename
+                                    if check == False:
+                                        print("Please enter First and Last name! (First and last name must be seperated by a space).")
+                                    if check == True:
+                                        #check for... a space ' ' as it must be a full name
+                                        while True:
+                                            if flag == True:
+                                                break
+                                            email = input("Email: ")
+                                            check1 = '@' in email
+                                            if check1 == False:
+                                                print("Invalid email address.")
+                                            if check1 == True:
+                                            #check for contains '@'
+                                                while True:
+                                                    age = input("Age: ")
+                                                    if age.isnumeric() == False:
+                                                        print("Invalid age.")
+                                                    if age.isnumeric() == True:
+                                                        #check for... is a number
+                                                        confirmation = input(f"\nYou wish to add: Fullname: {forename}, Email adress: {email}, Age: {age}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
+                                                        if confirmation == 'yes':
+                                                            add_member(forename, email, age)
+                                                            flag = True
+                                                            break
+                                                        if confirmation == 'no':
+                                                            flag = True
+                                                            break
+                                                            # use flags to get out of while loop
                             if userinput6 == 'x':
                                 break
                     if userinput5 == 'b':
