@@ -560,6 +560,7 @@ def replace_seriesid_with_name(series_id):
         return i[0]
     db.close()
 
+
 def check_id(table, userinputid):
     #   checks if inputed id exists
     db = sqlite3.connect("PraticeHome.db")
@@ -611,6 +612,31 @@ def add_series(series):
     sql = f'INSERT INTO Series (series_title) VALUES ("{series}");'
     cursor.execute(sql)
     db.commit()
+
+
+def remove_book(bookid):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+    sql = f"DELETE FROM Books WHERE book_id = {bookid};"
+    cursor.execute(sql)
+    db.commit()
+
+
+def remove_author(authorid):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+    sql = f"DELETE FROM Author WHERE id = {authorid};"
+    cursor.execute(sql)
+    db.commit()
+
+
+def remove_series(seriesid):
+    db = sqlite3.connect('PraticeHome.db')
+    cursor = db.cursor()
+    sql = f"DELETE FROM Series WHERE id = {seriesid};"
+    cursor.execute(sql)
+    db.commit()
+
 
 # main code
 print("\nWelcome to Libaray Database")
@@ -667,7 +693,7 @@ while True:
                                 print("Oops! That is not a valid Book ID.")
                     if userinput2 == 'd':
                         while True:
-                            userinput3 = input("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books\nEnter 'x' to go back\n>> ")
+                            userinput3 = input("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books\nEnter 'x' to go back\n>> ").lower()
                             if userinput3 == 'a':
                                 fetch_all_avaliable_books()
                             if userinput3 == 'b':
@@ -679,7 +705,7 @@ while True:
             if userinput1 == 'b':
                 fetch_all_members()
                 while True:
-                    userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to view details of specific member \nEnter 'c' to filter data by age\nEnter 'x' to go back\n>> ")
+                    userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to view details of specific member \nEnter 'c' to filter data by age\nEnter 'x' to go back\n>> ").lower()
                     if userinput4 == 'a':
                         fetch_borrowing_table()
                     if userinput4 == 'b':
@@ -697,7 +723,7 @@ while True:
                                 print("Oops! That is not a valid Member ID.")
                     if userinput4 == 'c':
                         while True:
-                            userinput7 = input("\nEnter 'a' to view children (under 12)\nEnter 'b' to view young adults (ages 12 to 17)\nEnter 'c' to view Adults (18+)\nEnter 'x' to go back\n>> ")
+                            userinput7 = input("\nEnter 'a' to view children (under 12)\nEnter 'b' to view young adults (ages 12 to 17)\nEnter 'c' to view Adults (18+)\nEnter 'x' to go back\n>> ").lower()
                             if userinput7 == 'a':
                                 fetch_all_minors()
                             if userinput7 == 'b':
@@ -716,10 +742,10 @@ while True:
             userinput8 = input("\nEnter pin to continue\nEnter 'x' to go back\n>> ")
             if userinput8 == '40981':
                 while True:
-                    userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'c' to edit data\nEnter 'x' to go back\n>> ")
+                    userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'x' to go back\n>> ").lower()
                     if userinput5 == 'a':
                         while True:
-                            userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add an author\nEnter 'c' to add a series\nEnter 'd' to add a member\nEnter 'x' to go back\n>> ")
+                            userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add an author\nEnter 'c' to add a series\nEnter 'd' to add a member\nEnter 'x' to go back\n>> ").lower()
                             if userinput6 == 'a':
                                 title = input("\nTitle: ")
                                 fetch_author_id()
@@ -809,19 +835,61 @@ while True:
                                                             # use flags to get out of while loop
                             if userinput6 == 'x':
                                 break
+
                     if userinput5 == 'b':
                         while True:
                             print("\nHaven't finished coding this section yet!!")
                             userinput9 = input("\nEnter 'a' to remove a book\nEnter 'b' to remove an author\nEnter 'c' to remove a series\nEnter 'd' to remove a member\nEnter 'x' to go back\n>> ").lower()
-                    if userinput5 == 'c':
-                        while True:
-                            print("\nHaven't finished coding this section yet!!")
-                            userinput10 = input("\nEnter 'a' to edit book data\nEnte 'b' to edit member data\n>> ").lower
-                            if userinput10 == 'a':
-                                while True:
-                                    print("\nEnter 'a' to change book title\nEnter 'b' to change author name\nEnter 'c' to change series name\n>> ").lower()
-                    if userinput5 == 'x':
-                        break
+                            if userinput9 == 'a':
+                                fetch_all_books()
+                                # check numeric
+                                bookid = input("Enter Book ID: ")
+                                if bookid.isnumeric() == False:
+                                    print("Invalid input. Try again!")
+                                    break
+                                if bookid.isnumeric() == True:
+                                    confirmation = input(f"\nYou want to remove {bookid} from libray system?\nEnter 'yes' to remove book\nEnter 'no' to cancel\n>> ").lower()
+                                    if confirmation == 'no':
+                                        break
+                                    if confirmation == 'yes':
+                                        remove_book(bookid)
+                            if userinput9 == 'b':
+                                fetch_author_id()
+                                authorid = input("Enter Author ID: ")
+                                if authorid.isnumeric() == False:
+                                    print("Invalid input. Try again!")
+                                    break
+                                if authorid.isnumeric() == True:
+                                    confirmation = input(f"\nYou want to remove {authorid} from library system?\nEnter 'yes' to remove author\nEnter 'no' to cancel\n>> ").lower()
+                                    if confirmation == 'no':
+                                        break
+                                    if confirmation == 'yes':
+                                        remove_author(authorid)
+                            if userinput9 == 'x':
+                                break
+                            if userinput9 == 'c':
+                                fetch_all_series()
+                                seriesid = input("Enter Series ID: ")
+                                if seriesid.isnumeric() == False:
+                                    print("Invalid input. Try again!")
+                                    break
+                                if seriesid.isnumeric() == True:
+                                    confirmation = input(f"\nYou wish to remove {seriesid} from library system?\nEnter 'yes' to remove series\nEnter 'no' to cancel\n>> ").lower()
+                                    if confirmation == 'no':
+                                        break
+                                    if confirmation == 'yes':
+                                        remove_series(seriesid)
+                            if userinput9 == 'd':
+                                fetch_all_members()
+                                memberid = input("Enter Member ID: ")
+                                if memberid.isnumeric() == False:
+                                    print("Invalid input. Try again!")
+                                    break
+                                if memberid.isnumeric() == True:
+                                    confirmation = input(f"\nYou wish to remove {memberid} from library system?\nEnter 'yes' to remove member\nEnter 'no' to cancel\n>> ").lower()
+                                
+
+
             elif userinput8 == 'x':
                 break
             else:
