@@ -365,6 +365,7 @@ def fetch_young_adults():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
 
+    # name column formatting
     sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
     cursor.execute(sql1)
     results = cursor.fetchone()
@@ -373,6 +374,7 @@ def fetch_young_adults():
         forenamelength = len(x)
         forenamespaces = (forenamelength-4) * " "
 
+    # email column formatting
     sql3 = "SELECT email FROM Members ORDER BY Length(email) desc LIMIT 1;"
     cursor.execute(sql3)
     results = cursor.fetchone()
@@ -381,6 +383,7 @@ def fetch_young_adults():
         emaillength = len(x)
         emailspaces = (emaillength-5) * " "
 
+    # print table
     sql = "SELECT * FROM Members WHERE Age >= 12 and Age < 18;"
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -394,6 +397,7 @@ def fetch_all_minors():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
 
+    # name format
     sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
     cursor.execute(sql1)
     results = cursor.fetchone()
@@ -402,6 +406,7 @@ def fetch_all_minors():
         forenamelength = len(x)
         forenamespaces = (forenamelength-4) * " "
 
+    # email format
     sql3 = "SELECT email FROM Members ORDER BY Length(email) desc LIMIT 1;"
     cursor.execute(sql3)
     results = cursor.fetchone()
@@ -410,6 +415,7 @@ def fetch_all_minors():
         emaillength = len(x)
         emailspaces = (emaillength-5) * " "
 
+    # print table
     sql = "SELECT * FROM Members WHERE Age < 12;"
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -423,6 +429,7 @@ def fetch_all_adults():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
 
+    # name formet
     sql1 = "SELECT Forename FROM Members ORDER BY Length(forename) desc LIMIT 1;"
     cursor.execute(sql1)
     results = cursor.fetchone()
@@ -431,6 +438,7 @@ def fetch_all_adults():
         forenamelength = len(x)
         forenamespaces = (forenamelength-4) * " "
 
+    # email format
     sql3 = "SELECT email FROM Members ORDER BY Length(email) desc LIMIT 1;"
     cursor.execute(sql3)
     results = cursor.fetchone()
@@ -439,6 +447,7 @@ def fetch_all_adults():
         emaillength = len(x)
         emailspaces = (emaillength-5) * " "
 
+    # print table
     sql = "SELECT * FROM Members WHERE Age > 17;"
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -652,13 +661,16 @@ print("\nWelcome to Libaray Database")
 while True:
     userinput = input("\nEnter 1 to view data\nEnter 2 to edit data\n>> ")
     if userinput == '1':
+        # view data
         while True:
             userinput1 = input("\nEnter 'a' to view book data\nEnter 'b' to view member data\nEnter 'x' to go back\n>> ").lower()
             if userinput1 == 'a':
+                # view book data
                 fetch_all_books()
                 while True:
                     userinput2 = input("\nEnter 'a' to filter results by author\nEnter 'b' to filter results by series\nEnter 'c' to view details of specific book\nEnter 'd' to filter results by avaliability\nEnter 'x' to go back\n>> ").lower()
                     if userinput2 == 'a':
+                        # results filtered by author
                         fetch_author_id()
                         print("\nEnter Author ID to view books by author (e.g. for J.K. Rowling input '27')")
                         while True:
@@ -673,6 +685,7 @@ while True:
                             except TypeError:
                                 print("Oops! That is either not a valid Author ID or this Author has no books in our Library.\n")
                     if userinput2 == 'b':
+                        # results filtered by series
                         fetch_all_series()
                         print("\nEnter Series ID to books in series (e.g. for Harry Potter input '9')")
                         while True:
@@ -687,6 +700,7 @@ while True:
                             except TypeError:
                                 print("Oops! That is either not a valid Series ID or there are no books in our library that are apart of this Series.\n")
                     if userinput2 == 'c':
+                        # results of specific book
                         print("\nEnter Book ID to view details (e.g. for Harry Potter and the Sorcerer's Stone input '56')")
                         while True:
                             try:
@@ -700,23 +714,31 @@ while True:
                             except TypeError:
                                 print("Oops! That is not a valid Book ID.")
                     if userinput2 == 'd':
+                        # avaliability
                         while True:
                             userinput3 = input("\nEnter 'a' to view avaliable books\nEnter 'b' to view unavaliable books\nEnter 'x' to go back\n>> ").lower()
                             if userinput3 == 'a':
+                                # avaliable
                                 fetch_all_avaliable_books()
                             if userinput3 == 'b':
+                                # unavaliable
                                 fetch_all_unavaliable_books()
                             elif userinput3 == 'x':
+                                # go back
                                 break
                     if userinput2 == 'x':
+                        # go back
                         break
             if userinput1 == 'b':
+                # view member data
                 fetch_all_members()
                 while True:
                     userinput4 = input("\nEnter 'a' to view members with a book checked out \nEnter 'b' to view details of specific member \nEnter 'c' to filter data by age\nEnter 'x' to go back\n>> ").lower()
                     if userinput4 == 'a':
+                        # books checked out
                         fetch_borrowing_table()
                     if userinput4 == 'b':
+                        # results of specific member
                         print("\nEnter member id to view details (e.g. for Belle Rungrojthanacorn input '9')")
                         while True:
                             try:
@@ -730,39 +752,52 @@ while True:
                             except TypeError:
                                 print("Oops! That is not a valid Member ID.")
                     if userinput4 == 'c':
+                        # results by age
                         while True:
                             userinput7 = input("\nEnter 'a' to view children (under 12)\nEnter 'b' to view young adults (ages 12 to 17)\nEnter 'c' to view Adults (18+)\nEnter 'x' to go back\n>> ").lower()
                             if userinput7 == 'a':
+                                # under 12
                                 fetch_all_minors()
                             if userinput7 == 'b':
+                                # aged 12 - 17
                                 fetch_young_adults()
                             if userinput7 == 'c':
+                                # aduls
                                 fetch_all_adults()
                             if userinput7 == 'x':
+                                # go back
                                 break
                     if userinput4 == 'x':
+                        # go back
                         break
             if userinput1 == 'x':
+                # go back
                 break
 
     if userinput == '2':
+        # edit data
         while True:
             userinput8 = input("\nEnter pin to continue\nEnter 'x' to go back\n>> ")
+            # password = 40981
             if userinput8 == '40981':
                 while True:
                     userinput5 = input("\nEnter 'a' to add data\nEnter 'b' to remove data\nEnter 'x' to go back\n>> ").lower()
                     if userinput5 == 'a':
+                        # add data
                         while True:
                             userinput6 = input("\nEnter 'a' to add a book\nEnter 'b' to add an author\nEnter 'c' to add a series\nEnter 'd' to add a member\nEnter 'x' to go back\n>> ").lower()
                             if userinput6 == 'a':
+                                # add a title
                                 title = input("\nTitle: ")
                                 fetch_author_id()
                                 flag = False
                                 while True:
+                                    # author
                                     author_id = input("Author ID: ")
                                     if author_id.isnumeric() == True:
                                         check = check_id("author", author_id)
                                         if check == True:
+                                            # series
                                             fetch_all_series()
                                             while True:
                                                 series_id = input("Series ID: ")
@@ -770,6 +805,7 @@ while True:
                                                     check1 = check_id("series", series_id)
                                                     if check1 == True:
                                                         while True:
+                                                            # confirmation
                                                             confirmation = input(f"\nYou wish to add: Title: {title}, Author: {replace_authorid_with_name(author_id)}, Series: {replace_seriesid_with_name(series_id)}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
                                                             if confirmation == 'yes':
                                                                 add_book(title, author_id, series_id)
@@ -793,24 +829,30 @@ while True:
                                     if flag == True:
                                         break
                             if userinput6 == 'b':
+                                # add author name
                                 name = input("\nAuthor's Full name: ")
+                                # confirm
                                 confirmation = input(f"\nYou wish to add: Author's Fullname: {name}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
                                 if confirmation == 'yes':
                                     add_author(name)
                                 if confirmation == 'no':
                                     break
                             if userinput6 == 'c':
+                                # add series
                                 series = input("\nSeries title: ")
+                                # confirm
                                 confirmation = input(f"\nYou wish to add: Series title: {series}?\nEnter 'yes' to commit change\nEnter 'no' to cancel\n>> ").lower()
                                 if confirmation == 'yes':
                                     add_series(series)
                                 if confirmation == 'no':
                                     break
                             if userinput6 == 'd':
+                                # add member
                                 flag = False
                                 while True:
                                     if flag == True:
                                         break
+                                    # name
                                     forename = input("\nFullname: ")
                                     check = ' ' in forename
                                     if check == False:
@@ -820,6 +862,7 @@ while True:
                                         while True:
                                             if flag == True:
                                                 break
+                                            # email
                                             email = input("Email: ")
                                             check1 = '@' in email
                                             if check1 == False:
@@ -829,6 +872,7 @@ while True:
                                                 while True:
                                                     if flag == True:
                                                         break
+                                                    # add age
                                                     age = input("Age: ")
                                                     if age.isnumeric() == False:
                                                         print("Invalid age.")
@@ -847,12 +891,15 @@ while True:
                                                                 print("Oops! Invalid input. Please enter 'yes' or 'no'.")
                                                                 # use flags to get out of while loop
                             if userinput6 == 'x':
+                                # go back
                                 break
 
                     if userinput5 == 'b':
+                        # remove data
                         while True:
                             userinput9 = input("\nEnter 'a' to remove a book\nEnter 'b' to remove an author\nEnter 'c' to remove a series\nEnter 'd' to remove a member\nEnter 'x' to go back\n>> ").lower()
                             if userinput9 == 'a':
+                                # remove book
                                 fetch_all_books()
                                 # check numeric
                                 bookid = input("Enter Book ID: ")
@@ -860,38 +907,45 @@ while True:
                                     print("Invalid input. Try again!")
                                     break
                                 if bookid.isnumeric() == True:
+                                    # confrim
                                     confirmation = input(f"\nYou want to remove {bookid} from libray system?\nEnter 'yes' to remove book\nEnter 'no' to cancel\n>> ").lower()
                                     if confirmation == 'no':
                                         break
                                     if confirmation == 'yes':
                                         remove_book(bookid)
                             if userinput9 == 'b':
+                                # remove author
                                 fetch_author_id()
                                 authorid = input("Enter Author ID: ")
                                 if authorid.isnumeric() == False:
                                     print("Invalid input. Try again!")
                                     break
                                 if authorid.isnumeric() == True:
+                                    # confrim
                                     confirmation = input(f"\nYou want to remove {authorid} from library system?\nEnter 'yes' to remove author\nEnter 'no' to cancel\n>> ").lower()
                                     if confirmation == 'no':
                                         break
                                     if confirmation == 'yes':
                                         remove_author(authorid)
                             if userinput9 == 'x':
+                                # go back
                                 break
                             if userinput9 == 'c':
+                                # remove a series
                                 fetch_all_series()
                                 seriesid = input("Enter Series ID: ")
                                 if seriesid.isnumeric() == False:
                                     print("Invalid input. Try again!")
                                     break
                                 if seriesid.isnumeric() == True:
+                                    # confirm
                                     confirmation = input(f"\nYou wish to remove {seriesid} from library system?\nEnter 'yes' to remove series\nEnter 'no' to cancel\n>> ").lower()
                                     if confirmation == 'no':
                                         break
                                     if confirmation == 'yes':
                                         remove_series(seriesid)
                             if userinput9 == 'd':
+                                # remove member
                                 fetch_all_members()
                                 memberid = input("Enter Member ID: ")
                                 if memberid.isnumeric() == False:
@@ -899,6 +953,7 @@ while True:
                                     break
                                 if memberid.isnumeric() == True:
                                     while True:
+                                        # confirm
                                         confirmation = input(f"\nYou wish to remove {memberid} from library system?\nEnter 'yes' to remove member\nEnter 'no' to cancel\n>> ").lower()
                                         if confirmation == 'no':
                                             break
@@ -908,8 +963,10 @@ while True:
                                         if confirmation != 'yes' or confirmation != 'no':
                                             print("Oops! Invalid input. Please enter 'yes' or 'no'.")
                     if userinput5 == 'x':
+                        # go back
                         break
             if userinput8 == 'x':
+                # go back
                 break
             else:
                 print("Incorrect pin!")
