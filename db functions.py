@@ -4,6 +4,7 @@ import sqlite3
 
 DB = 'PraticeHome.db'
 
+# prints author and author id in a table
 def fetch_author_id():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -15,7 +16,7 @@ def fetch_author_id():
         print(f"{i[0]:9} | {i[1]}")
     db.close
 
-
+# prints seires and series id in a table
 def fetch_all_series():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -26,7 +27,7 @@ def fetch_all_series():
     for i in results:
         print(f"{i[0]:9} | {i[1]}")
 
-
+# prints all books in a table
 def fetch_all_books():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -72,7 +73,7 @@ def fetch_all_books():
         print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
     db.close()
 
-
+# prints unavaliable books in a table
 def fetch_all_unavaliable_books():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -126,7 +127,7 @@ ORDER BY Length(series_title) desc LIMIT 1;"""
         print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
     db.close()
 
-
+# prints avaliable books in a table
 def fetch_all_avaliable_books():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -180,7 +181,7 @@ ORDER BY Length(series_title) desc LIMIT 1;"""
         print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
     db.close()
 
-
+# prints all members in a table
 def fetch_all_members():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -213,7 +214,7 @@ def fetch_all_members():
         print(f"{i[0]:>9} | {i[1]:<{fnlg}} | {i[2]:{elg}} | {i[3]}")
     db.close()
 
-
+# prints all books by a specific author
 def fetch_books_by_author_id(author_id):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -267,7 +268,7 @@ ORDER BY Length(series_title) desc LIMIT 1;"""
         print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
     db.close()
 
-
+# prints a specifc book in a table 
 def fetch_specific_book(book_id):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -322,7 +323,7 @@ WHERE book_id = {book_id};"""
         print(f"{i[0]:>7} | {i[1]:{tlg}} | {i[2]:{alg}} | {i[3]:{slg}} | {i[4]}")
     db.close()
 
-
+# prints all books that are currently being borrowed and nae of borrower 
 def fetch_borrowing_table():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -360,7 +361,7 @@ ORDER BY Length(title) desc LIMIT 1;"""
         print(f"{i[0]:{fnlg}} | {i[1]:{tlg}} | {i[2]} | {i[3]}")
     db.close()
 
-
+# prints all members between ages 12 - 18 in a table
 def fetch_young_adults():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -392,7 +393,7 @@ def fetch_young_adults():
         print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
     db.close()
 
-
+# prints all members under 12 in a table
 def fetch_all_minors():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -424,7 +425,7 @@ def fetch_all_minors():
         print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
     db.close()
 
-
+# prints all members over 18 in a table
 def fetch_all_adults():
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -456,7 +457,7 @@ def fetch_all_adults():
         print(f"{i[0]:>9} | {i[1]:<{forenamelength}} | {i[2]:{emaillength}} | {i[3]}")
     db.close()
 
-
+# prints books from a specific series in a table
 def fetch_specific_series(id):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -513,7 +514,7 @@ WHERE series = {id};"""
         print(f"{i[0]:{tlg}} | {i[1]:{alg}} | {i[2]:{slg}} | {i[3]}")
     db.close
 
-
+# prints details of a specific member in a table
 def fetch_specific_member(member_id):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -546,7 +547,7 @@ def fetch_specific_member(member_id):
         print(f"{i[0]:>9} | {i[1]:<{fnlg}} | {i[2]:{elg}} | {i[3]}")
     db.close()
 
-
+# replaces author id with author name
 def replace_authorid_with_name(author_id):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -558,7 +559,7 @@ def replace_authorid_with_name(author_id):
         return i[0]
     db.close()
 
-
+# replaces series id with series name
 def replace_seriesid_with_name(series_id):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -570,7 +571,7 @@ def replace_seriesid_with_name(series_id):
         return i[0]
     db.close()
 
-
+# check id
 def check_id(table, userinputid):
     #   checks if inputed id exists
     db = sqlite3.connect("PraticeHome.db")
@@ -588,7 +589,7 @@ def check_id(table, userinputid):
 
 # edit functions
 
-
+# adds book
 def add_book(title, author_id, series_id):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -597,7 +598,7 @@ VALUES ("{title}", "{author_id}", "{series_id}", "Avaliable");"""
     cursor.execute(sql)
     db.commit()
 
-
+# adds a member
 def add_member(forename, email, age):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -606,7 +607,7 @@ VALUES ('{forename}', '{email}', '{age}');"""
     cursor.execute(sql)
     db.commit()
 
-
+# adds an author
 def add_author(name):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -615,7 +616,7 @@ VALUES ("{name}");"""
     cursor.execute(sql)
     db.commit()
 
-
+# adds a series
 def add_series(series):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -623,7 +624,7 @@ def add_series(series):
     cursor.execute(sql)
     db.commit()
 
-
+# remove a book
 def remove_book(bookid):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -631,7 +632,7 @@ def remove_book(bookid):
     cursor.execute(sql)
     db.commit()
 
-
+# remove an author
 def remove_author(authorid):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -639,7 +640,7 @@ def remove_author(authorid):
     cursor.execute(sql)
     db.commit()
 
-
+# remove a series
 def remove_series(seriesid):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
@@ -647,7 +648,7 @@ def remove_series(seriesid):
     cursor.execute(sql)
     db.commit()
 
-
+# remove a member
 def remove_member(memberid):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
